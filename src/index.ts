@@ -1,6 +1,14 @@
 import express from 'express'
 const app = express()
 app.use(express.json())
+import ListaFilme from './aplicacao/lista_filme.use_case'
+import BancoMongoDB from './infra/banco_mongodb'
+app.get('/filmes',async (req,res) => {
+    const bancoMongoDB = new BancoMongoDB()
+    const listaFilme = new ListaFilme(bancoMongoDB)
+    const filmes = await listaFilme.executar()
+    res.send(filmes)
+})
 //Tenho que ter uma rota post para cadastrar um filme
 
 //Salvar em algum lugar o filme que foi cadastrado.
