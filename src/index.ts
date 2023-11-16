@@ -1,3 +1,4 @@
+import SalvaFilme from "./aplicacao/salva_filme.use_case"
 import express from 'express'
 const app = express()
 app.use(express.json())
@@ -41,6 +42,25 @@ app.get('/filmes/:id',(req,res)=>{
     if(!filme) return res.status (404).send('Filme não encontrado')
     res.status(200).send(filme)
 })
+
+app.post('/filmes',async(req,res)=>{
+    const {id,titulo,descricao,imagem} = req.body
+    const filme = {
+        id,
+        titulo,
+        descricao,
+        imagem
+    }
+    const SalvaFilmes = new SalvaFilme(BancoMongoDB)
+    const repositorio = await SalvaFilmes.execute(filme)
+    res.send(repositorio)
+
+
+})
+
+
+
+
 
 //Tenho que iniciar o servidor na porta 3000
 app.listen(3000,()=>{
